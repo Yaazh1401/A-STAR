@@ -1,6 +1,6 @@
 <h1>ExpNo 4 : Implement A* search algorithm for a Graph</h1> 
-<h3>Name:       </h3>
-<h3>Register Number:           </h3>
+<h3>Name:   Yaazhini S    </h3>
+<h3>Register Number:   212224230308        </h3>
 <H3>Aim:</H3>
 <p>To ImplementA * Search algorithm for a Graph using Python 3.</p>
 <H3>Algorithm:</H3>
@@ -57,6 +57,67 @@
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/b1377c3f-011a-4c0f-a843-516842ae056a)
 
 <hr>
+
+## PROGRAM 
+```
+import heapq
+
+def astar(graph, heuristics, start, goal):
+    open_list = []
+    heapq.heappush(open_list, (0, start))
+    
+    came_from = {}
+    g_cost = {start: 0}
+    closed_list = set()
+
+    while open_list:
+        f, current = heapq.heappop(open_list)
+
+        if current == goal:
+            path = []
+            while current:
+                path.append(current)
+                current = came_from.get(current)
+            return path[::-1]
+
+        closed_list.add(current)
+
+        for neighbor, cost in graph[current]:
+            if neighbor in closed_list:
+                continue
+
+            tentative_g = g_cost[current] + cost
+
+            if neighbor not in g_cost or tentative_g < g_cost[neighbor]:
+                g_cost[neighbor] = tentative_g
+                f_cost = tentative_g + heuristics[neighbor]
+                heapq.heappush(open_list, (f_cost, neighbor))
+                came_from[neighbor] = current
+
+    return None
+
+n, m = map(int, input().split())
+
+graph = {}
+for _ in range(m):
+    u, v, w = input().split()
+    w = int(w)
+    graph.setdefault(u, []).append((v, w))
+    graph.setdefault(v, []).append((u, w))
+
+heuristics = {}
+for _ in range(n):
+    node, h = input().split()
+    heuristics[node] = int(h)
+
+start = 'A'
+goal = min(heuristics, key=heuristics.get)
+
+path = astar(graph, heuristics, start, goal)
+
+print("Path found:", path)
+
+```
 <h2>Sample Input</h2>
 <hr>
 10 14 <br>
@@ -87,7 +148,7 @@ J 0 <br>
 <hr>
 <h2>Sample Output</h2>
 <hr>
-Path found: ['A', 'F', 'G', 'I', 'J']
+<img width="615" height="577" alt="image" src="https://github.com/user-attachments/assets/83d56e5a-629d-44c6-a8a4-a6d77b05555c" />
 
 
 <hr>
@@ -116,4 +177,5 @@ G 0 <br>
 <hr>
 <h2>Sample Output</h2>
 <hr>
-Path found: ['A', 'E', 'D', 'G']
+<img width="494" height="354" alt="image" src="https://github.com/user-attachments/assets/05a75a22-6b53-4d91-b327-f1a801c2d7f0" />
+
